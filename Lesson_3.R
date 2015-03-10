@@ -62,19 +62,20 @@ tweets_data2['Verbatim'] = "I want to buy a new phone harsh"
 r <- POST("http://52.11.212.179:8080/intent",body=tweets_data2, encode = "json")
 stop_for_status(r)
 c<-httr::content(r, "parsed", "application/json")
+c
 
-
-r <- POST("http://52.11.212.179:8080/intent",body=tweets_data, encode = "json")
-stop_for_status(r)
-c<-httr::content(r, "parsed", "application/json")
-kpi_list<-as.matrix(as.numeric(c))
-word_cloud_kpi<-c()
-idx<-1
-for (idx in 1:length(word_freq$Words)) {
-  cur_word<-word_freq$Words[idx]
-  cur_freq<-t(as.matrix(tdm[cur_word,]))
-  word_cloud_kpi$word[idx]=cur_word
-  word_cloud_kpi$corr[idx]=(cor(cur_freq,kpi_list))
-}
-word_cloud_kpi$Normalized<-100*(word_cloud_kpi$corr-min(word_cloud_kpi$corr))/(max(word_cloud_kpi$corr)-min(word_cloud_kpi$corr))
-wordcloud(word_cloud_kpi$word,word_cloud_kpi$Normalized,scale=c(4,0.5),min.freq=20, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
+#tweets_data3 = tweets_data[1:20,]
+#r <- POST("http://52.11.212.179:8080/intent",body=tweets_data3, encode = "json")
+#stop_for_status(r)
+#c<-httr::content(r, "parsed", "application/json")
+#kpi_list<-as.matrix(as.numeric(c))
+#word_cloud_kpi<-c()
+#idx<-1
+#for (idx in 1:length(word_freq$Words)) {
+#  cur_word<-word_freq$Words[idx]
+#  cur_freq<-t(as.matrix(tdm[cur_word,]))
+#  word_cloud_kpi$word[idx]=cur_word
+#  word_cloud_kpi$corr[idx]=(cor(cur_freq,kpi_list))
+#}
+#word_cloud_kpi$Normalized<-100*(word_cloud_kpi$corr-min(word_cloud_kpi$corr))/(max(word_cloud_kpi$corr)-min(word_cloud_kpi$corr))
+#wordcloud(word_cloud_kpi$word,word_cloud_kpi$Normalized,scale=c(4,0.5),min.freq=20, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
