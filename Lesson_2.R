@@ -13,9 +13,9 @@ wc_data$Klout<-as.numeric(as.character(tweets_data$Klout_score[unique_authors]))
 wc_data$Followers<-as.numeric(as.character(tweets_data$Followers[unique_authors]))
 
 klout_filter<-!is.na(wc_data$Klout)
-wordcloud(wc_data$handle[klout_filter], wc_data$Klout[klout_filter], scale=c(2,0.0001), min.freq=20, max.words=200, random.order=FALSE, rot.per=.5, use.r.layout = TRUE, colors=brewer.pal(9,"PRGn"))
-
 wordcloud(wc_data$handle[klout_filter], log10(wc_data$Followers[klout_filter]), scale=c(2,0.0001), min.freq=20, max.words=200, random.order=FALSE, rot.per=.5, use.r.layout = TRUE, colors=brewer.pal(9,"PRGn")) 
+
+wordcloud(wc_data$handle[klout_filter], wc_data$Klout[klout_filter], scale=c(2,0.0001), min.freq=20, max.words=200, random.order=FALSE, rot.per=.5, use.r.layout = TRUE, colors=brewer.pal(9,"PRGn"))
 
 idx <-order(-wc_data$Followers,-wc_data$Klout)
 plot(wc_data$Followers[idx[1:20]],wc_data$Klout[idx[1:20]],log="x",xlab="Number of followers",ylab="Klout", ylim=c(0,100))

@@ -7,7 +7,7 @@
 ###############################################
 ######## Setting the working directory ########
 ###############################################
-setwd("C:/Users/jhamtani/Documents/ATL/summit/social-insights")
+setwd("C:/L720")
 
 ######## Loading data ########
 # Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jre7') # for 64-bit version

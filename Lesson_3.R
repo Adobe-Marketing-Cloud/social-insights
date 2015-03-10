@@ -74,8 +74,9 @@ c
 #for (idx in 1:length(word_freq$Words)) {
 #  cur_word<-word_freq$Words[idx]
 #  cur_freq<-t(as.matrix(tdm[cur_word,]))
+#  cur_freq[1:20]
 #  word_cloud_kpi$word[idx]=cur_word
-#  word_cloud_kpi$corr[idx]=(cor(cur_freq,kpi_list))
+#  word_cloud_kpi$corr[idx]=(cor(cur_freq[1:20],kpi_list))
 #}
 #word_cloud_kpi$Normalized<-100*(word_cloud_kpi$corr-min(word_cloud_kpi$corr))/(max(word_cloud_kpi$corr)-min(word_cloud_kpi$corr))
 #wordcloud(word_cloud_kpi$word,word_cloud_kpi$Normalized,scale=c(4,0.5),min.freq=20, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
