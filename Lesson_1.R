@@ -2,6 +2,7 @@
 ######## Check status of installed libraries ########
 #####################################################
 # package_list<-c("xlsx","wordcloud","tm","rworldmap","httr","plyr")
+# install.packages(package_list)
 # status<-as.numeric(lapply(package_list, require, character.only=T))
 
 ################################################
