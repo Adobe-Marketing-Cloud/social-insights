@@ -27,7 +27,7 @@ corpus <- tm_map(corpus, content_transformer(tolower))
 corpus <- tm_map(corpus, content_transformer(stripWhitespace))
 corpus <- tm_map(corpus, content_transformer(removePunctuation))
 corpus <- tm_map(corpus, removeWords, stopwords("english"))
-tdm <- TermDocumentMatrix(corpus, list(bounds=list(global=c(5,Inf)),weighting=weightTfIdf,stopwords = TRUE))
+tdm <- TermDocumentMatrix(corpus, list(bounds=list(global=c(2,Inf)),weighting=weightTfIdf,stopwords = TRUE))
 
 ######## Exercise 3.3: Identifying top keywords around your brand ########
 word_freq<-as.data.frame(apply(tdm,1,mean))
@@ -35,13 +35,13 @@ colnames(word_freq)<-c("Frequecy")
 word_freq$Words<-row.names(word_freq)
 row.names(word_freq) <- 1:nrow(word_freq)
 word_freq$Normalized<-100*(word_freq$Frequecy-min(word_freq$Frequecy))/(max(word_freq$Frequecy)-min(word_freq$Frequecy))
-wordcloud(word_freq$Words,word_freq$Normalized,scale=c(4,0.5),min.freq=10, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
+wordcloud(word_freq$Words,word_freq$Normalized,scale=c(4,0.5),min.freq=1, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
 
 dict<-scan("words.lst", what="character", sep=NULL)
 idx<-!is.na(match(word_freq$Words,dict))
-word_freq<-word_freq[idx,]
-word_freq$Normalized<-100*(word_freq$Frequecy-min(word_freq$Frequecy))/(max(word_freq$Frequecy)-min(word_freq$Frequecy))
-wordcloud(word_freq$Words,word_freq$Normalized,scale=c(4,0.05),min.freq=5, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
+word_freq_clean<-word_freq[idx,]
+word_freq_clean$Normalized<-100*(word_freq_clean$Frequecy-min(word_freq_clean$Frequecy))/(max(word_freq_clean$Frequecy)-min(word_freq_clean$Frequecy))
+wordcloud(word_freq_clean$Words,word_freq_clean$Normalized,scale=c(4,0.05),min.freq=5, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
 
 ######## Exercise 3.4: Correlation with KPI ########
 kpi_list<-as.matrix(as.numeric(as.character(tweets_data$Sentiment)))
@@ -61,22 +61,26 @@ tweets_data2 = tweets_data[1:1,]
 tweets_data2['Verbatim'] = "I don't want to buy a new phone harsh" 
 r <- POST("http://52.11.212.179:8080/intent",body=tweets_data2, encode = "json")
 stop_for_status(r)
-c<-httr::content(r, "parsed", "application/json")
-c
+c<-as.matrix(httr::content(r, "parsed", "application/json"))
+if(c[1,1]==1)
+  print("Purchase Intent Present")
+if(c[1,1]==0)
+  print("Purchase Intent Absent")
 
-#tweets_data3 = tweets_data[1:20,]
-#r <- POST("http://52.11.212.179:8080/intent",body=tweets_data3, encode = "json")
-#stop_for_status(r)
-#c<-httr::content(r, "parsed", "application/json")
-#kpi_list<-as.matrix(as.numeric(c))
-#word_cloud_kpi<-c()
-#idx<-1
-#for (idx in 1:length(word_freq$Words)) {
+
+# tweets_data3 = tweets_data[1:20,]
+# r <- POST("http://52.11.212.179:8080/intent",body=tweets_data3, encode = "json")
+# stop_for_status(r)
+# c<-httr::content(r, "parsed", "application/json")
+# kpi_list<-as.matrix(as.numeric(c))
+# word_cloud_kpi<-c()
+# idx<-1
+# for (idx in 1:length(word_freq$Words)) {
 #  cur_word<-word_freq$Words[idx]
 #  cur_freq<-t(as.matrix(tdm[cur_word,]))
 #  cur_freq[1:20]
 #  word_cloud_kpi$word[idx]=cur_word
 #  word_cloud_kpi$corr[idx]=(cor(cur_freq[1:20],kpi_list))
-#}
-#word_cloud_kpi$Normalized<-100*(word_cloud_kpi$corr-min(word_cloud_kpi$corr))/(max(word_cloud_kpi$corr)-min(word_cloud_kpi$corr))
-#wordcloud(word_cloud_kpi$word,word_cloud_kpi$Normalized,scale=c(4,0.5),min.freq=20, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  
+# }
+# word_cloud_kpi$Normalized<-100*(word_cloud_kpi$corr-min(word_cloud_kpi$corr))/(max(word_cloud_kpi$corr)-min(word_cloud_kpi$corr))
+# wordcloud(word_cloud_kpi$word,word_cloud_kpi$Normalized,scale=c(4,0.5),min.freq=20, max.words=200, random.order=FALSE, rot.per=.5,use.r.layout = TRUE)  

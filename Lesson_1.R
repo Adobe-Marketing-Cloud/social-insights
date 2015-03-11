@@ -4,9 +4,9 @@
 # package_list<-c("xlsx","wordcloud","tm","rworldmap","httr","plyr")
 # status<-as.numeric(lapply(package_list, require, character.only=T))
 
-###############################################
-######## Setting the working directory ########
-###############################################
+################################################
+######## Setting the working directory #########
+################################################
 setwd("C:/L720")
 
 ######## Loading data ########
