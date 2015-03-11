@@ -58,7 +58,7 @@ wordcloud(word_cloud_kpi$word,word_cloud_kpi$Normalized,scale=c(4,0.5),min.freq=
 ######## Exercise 3.5: Intent in text ########
 library("httr")
 tweets_data2 = tweets_data[1:1,]
-tweets_data2['Verbatim'] = "I don't want to buy a new phone harsh" 
+tweets_data2['Verbatim'] = "I don't want to buy a new phone" 
 r <- POST("http://52.11.212.179:8080/intent",body=tweets_data2, encode = "json")
 stop_for_status(r)
 c<-as.matrix(httr::content(r, "parsed", "application/json"))
