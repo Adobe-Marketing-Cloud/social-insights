@@ -31,21 +31,21 @@ library("plyr")
 score_csv<-ldply(score,data.frame)
 write.csv(file="score.csv",score_csv)
 
-score_data = read.csv("score.csv", header = TRUE)
-sorted_score_data = score_data[ with(score_data,order(sdScore)) ,  ]
-scores = sorted_score_data$sdScore[1:20]
-user_ids <- sorted_score_data$user[1:20]
-barplot( scores, main="Sentiment score", horiz=TRUE, names.arg=user_ids, las=1, cex.names = 1.0, log = "x" )
+score_data = as.data.frame(read.csv("score.csv", header = TRUE))
+sorted_score_data = score_data[ with(score_data,order(-SentimentScore)) ,  ]
+sentiment = sorted_score_data$SentimentScore[1:20]
+user_ids <- sorted_score_data$Author_username[1:20]
+barplot( sentiment, main="Sentiment Score", horiz=TRUE, names.arg=user_ids, las=1, cex.names = 1.0, log = "x" )
 
 sorted_score_data = score_data[with(score_data,order(-cntNeg)),]
 scores = sorted_score_data$cntNeg[1:20]
-user_ids <- sorted_score_data$user[1:20]
+user_ids <- sorted_score_data$Author_username[1:20]
 barplot( scores, main="Negative Tweeters", horiz=TRUE, names.arg=user_ids, las=1, cex.names = 1.0 )
 
-sorted_score_data = score_data[with(score_data,order(-sdScore)),]
-user_ids <- sorted_score_data$user[1:20]
-klout = sorted_score_data$influenceScore[1:20]
-adobe = sorted_score_data$sdScore[1:20]
+sorted_score_data = score_data[with(score_data,order(-SentimentScore)),]
+user_ids <- sorted_score_data$Author_username[1:20]
+klout = sorted_score_data$InfluenceScore[1:20]
+adobe = sorted_score_data$UserScore[1:20]
 plot(klout, adobe, main="Klout score vs Adobe score", xlab="Klout score ", ylab="Adobe Score ", pch=19)
 text(klout, adobe, labels=user_ids, cex= 0.7, pos=3)
 
